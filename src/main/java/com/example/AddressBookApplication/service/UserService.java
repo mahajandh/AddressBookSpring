@@ -25,6 +25,7 @@ public class UserService implements IUserService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // Register User
+    @Override
     public String registerUser(UserDTO userdto) {
         if (userRepository.existsByEmail(userdto.getEmail())) {
             return "Email is already in use!";
@@ -46,6 +47,7 @@ public class UserService implements IUserService {
     }
 
     // Authenticate User and Generate Token
+    @Override
     public String authenticateUser(String email, String password) {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
@@ -63,6 +65,7 @@ public class UserService implements IUserService {
         return jwtUtil.generateToken(email);
     }
     // Forgot Password Implementation
+    @Override
     public String forgotPassword(String email, String newPassword) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
@@ -76,7 +79,7 @@ public class UserService implements IUserService {
         String subject = "Password Change Notification";
         String content = "<h2>Hello " + user.getUsername() + ",</h2>"
                 + "<p>Your password has been changed successfully.</p>"
-                + "<br><p>Regards,</p><p><strong>GreetingsApp Team</strong></p>";
+                + "<br><p>Regards,</p><p><strong>AddressBookApp Team</strong></p>";
 
         emailService.sendEmail(user.getEmail(), subject, content);
 
@@ -84,6 +87,7 @@ public class UserService implements IUserService {
     }
 
     // Reset Password Implementation
+    @Override
     public String resetPassword(String email, String currentPassword, String newPassword) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
@@ -100,7 +104,7 @@ public class UserService implements IUserService {
         String subject = "Password Reset Notification";
         String content = "<h2>Hello " + user.getUsername() + ",</h2>"
                 + "<p>Your password has been reset successfully.</p>"
-                + "<br><p>Regards,</p><p><strong>GreetingsApp Team</strong></p>";
+                + "<br><p>Regards,</p><p><strong>AddressBookApp Team</strong></p>";
 
         emailService.sendEmail(user.getEmail(), subject, content);
 
